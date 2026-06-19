@@ -1,0 +1,66 @@
+
+
+
+
+
+
+ <!–Manage Running Processes –>    
+<div class="modal fade" id="status_modal" tabindex="-1" role="dialog" aria-labelledby="accountModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="accountModalLabel">Irrigation State</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                 
+            </div>
+                 <ul >
+
+                   <li id="time_stamp">Time Stamp: </li>
+                   <li id="controller_time_stamp">Controller Time Stamp: </li>
+                   <li id="schedule">Sprinkler Schedule: </li>
+                   <li id="step">Sprinkler Step:   </li>
+                   <li id="time">Time Of Step:      </li>
+                   <li id="duration">Current Duration:  </li>  
+                   <li id="flow_rate">Current Flow Rate:  </li>
+                   <li id="plc_flow_rate">PLC Flow Rate:  </li>
+                   <li id="filtered_flow">Filtered Hunter Flow Rate:  </li>
+                   <li id="hunter_flow">Hunter Flow Rate:  </li>
+                   <li id="cleaning_rate">Cleaning Flow Rate:  </li>
+				   <li id="hunter_hires">Hunter HIRES Flow Rate:  </li>
+                   <li id="irrigation_current">Irrigation  Current: </li>
+                   <li id="equipment_current">Equipment  Current: </li>
+                   <li id="pump_input_current">Pump Input Current: </li>
+                   <li id="pump_output_current">Pump Output Current: </li>
+                   <li id="well_pressure">Well Pressure;   </li>
+                   <li id="rain_day">Rain Day:      </li>        
+                   <li id="eto_management">ETO Management: </li>
+                   <li id="master_valve">Master Valve State: </li>
+                    <li id="suspend">SUSPENSION STATE: </li>
+                   <li id="clean_filter_limit">Filter Cleaning Limit (GPM): </li>
+                  <li id="clean_filter_value">Filter Cleaning Accumulation (GPM): </li>
+                </ul> 
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    
+                 </div>
+           </div>
+    </div>
+</div>   
+<script type="text/javascript" >
+ {% include "js/status_request.js" %}   
+
+
+$(document).ready(function(){
+    $("#status_panel").click(function(){
+        $("#status_modal").modal("show");
+        status_request_function()
+    });
+    $("#myModal").on('shown.bs.modal', function () {
+            alert('The modal is fully shown.');
+            // add jquery load function
+    });
+});
+</script>
+

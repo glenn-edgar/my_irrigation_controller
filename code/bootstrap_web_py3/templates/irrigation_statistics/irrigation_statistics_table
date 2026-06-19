@@ -1,0 +1,79 @@
+{% extends "base_template" %}
+
+{
+
+{% block application %}
+
+
+<style type="text/css" media="screen">
+
+table{
+margin: 35px;
+border-collapse:collapse;
+border:1px solid #000000;
+}
+
+
+table th {
+  text-align: center;
+  border:1px solid #000000;
+padding: 15px;
+
+}
+
+table td{
+border:1px solid #000000;
+padding: 15px;
+
+
+}
+h3 {
+  margin: 35px;
+}
+</style>
+  <div data-role="page"> 
+
+ <h3>Irrigation Averages</h3>
+  <table>
+  <tr>
+    <th>Valve</th>
+    <th>Reference</th>
+    <th>Step -1</th>
+     <th>Step -2</th>
+      <th>Step -3</th>
+       <th>Step-4</th>
+        <th>Step-5</th>
+		<th>Step-6</th>
+		<th>Step-7</th>
+		<th>Step-8</th>
+  </tr>
+  {{ table_element }}
+</table>
+<h3>Irrigation Standard Deviations</h3>
+<table>
+  <tr>
+    <th>Valve</th>
+    <th>Reference</th>
+    <th>Step -1</th>
+     <th>Step -2</th>
+      <th>Step -3</th>
+       <th>Step-4</th>
+        <th>Step-5</th>
+		<th>Step-6</th>
+		<th>Step-7</th>
+		<th>Step-8</th>
+  </tr>
+  {{ table_element_a }}
+</table>
+
+
+</div><!-- /page -->
+</html>
+
+
+{% endblock %}
+
+
+    
+
+   

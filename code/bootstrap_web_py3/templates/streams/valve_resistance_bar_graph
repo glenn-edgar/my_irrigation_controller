@@ -1,0 +1,76 @@
+{% extends "base_template" %}
+
+{% block application_javascript %}
+<script src="/static/js/plotly-latest.min.js"></script> 
+      <script type="text/javascript">
+         controllers = {{controllers}}
+         measurement_list = {{measurement_list}}
+         median_list    = {{median_list}}  
+         value_colors   = {{value_colors}}         
+     </script>
+    
+
+{% endblock %}
+        
+ 
+{% block application %}
+
+{% block application_header %}{% endblock %}
+<div class="container">
+{% for i in controller_keys  %}
+<h3>Data For Controller {{i}} </h3>
+<h4>Data Baselined on {{date_string}}</h4>
+
+<div style="margin-top:50px"></div>
+<div class="container">
+
+<div id="A{{i}}" style="width:100%;height:500pt;"></div>
+<script>
+
+var trace1 = {
+  y: controllers["{{i}}"],
+  x: measurement_list["{{i}}"],
+  orientation:'h',
+  type: 'bar',
+  name: 'Valve Current',
+  marker: {
+    color: value_colors["{{i}}"],
+    opacity: 0.9,
+  }
+};
+var trace2 = {
+  y: controllers["{{i}}"],
+  x: median_list["{{i}}"],
+  orientation:'h',
+  type: 'bar',
+  name: 'Valve Current Median',
+  marker: {
+    color: 'rgba(0,0,0,.9)',
+    opacity: 0.9,
+  }
+};
+
+
+var data = [trace1,trace2];
+
+var layout = {
+  title: 'Valve Current',
+  xaxis: {
+    tickangle: -90
+  },
+   
+  barmode: 'group'
+};
+
+Plotly.newPlot("A{{i}}", data, layout);
+</script>
+
+
+
+{% endfor %}
+</div>
+
+
+
+{% block application_footer %}{% endblock %}
+{% endblock %}

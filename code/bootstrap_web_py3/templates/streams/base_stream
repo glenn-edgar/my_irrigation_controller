@@ -1,0 +1,64 @@
+{% extends "base_template" %}
+
+{% block application_javascript %}
+<script src="/static/js/plotly-latest.min.js"></script> 
+      <script type="text/javascript">
+         True = true
+         False = false
+         stream_data = {{stream_data}}
+         stream_keys = {{stream_keys}}
+         titles  = {{titles}}
+         steam_range = {{stream_range}} 
+         max_value   = {{max_value}} 
+         min_value   = {{ min_value }}         
+     </script>
+    
+
+{% endblock %}
+        
+ 
+{% block application %}
+
+{% block application_header %}{% endblock %}
+
+{% for i in stream_range %}
+
+<div style="margin-top:50px"></div>
+<div class="container">
+
+
+
+<div id="{{title[i].replace(".","_").replace("-","_")}}" style="width:100%;height:600pt;"></div>
+
+ <script>
+
+ data = stream_data[stream_keys[{{i}}]]
+ trace= data["data"]
+ layout = data["layout"]
+
+ for( i = 0;i< trace.x.length; i++)
+ {
+    if( trace.y[i] > max_value)
+    {
+       trace.y[i] = max_value
+    }
+    if( trace.y[i] < min_value)
+    {
+       trace.y[i] = min_value
+    }
+ }
+ for( i = 0;i< trace.x.length; i++)
+ { 
+    trace.x[i] = new Date(trace.x[i]*1000)
+ } 
+ 
+ Plotly.newPlot("{{title[i].replace(".","_").replace("-","_")}}", [trace],layout);
+    
+</script>
+
+</div>
+
+
+{% endfor %}
+{% block application_footer %}{% endblock %}
+{% endblock %}

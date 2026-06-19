@@ -1,0 +1,92 @@
+{% extends "base_template"  %}
+{% block application_javascript %}
+<script src="/static/js/plotly-latest.min.js"></script> 
+ 
+
+      <script type="text/javascript">
+         True = true
+         False = false
+         stream_data = {{stream_data}}
+         stream_keys = {{stream_keys}}
+         titles  = {{titles}}
+         steam_range = {{stream_range}} 
+                 
+     </script>
+    
+<script type="text/javascript">
+
+$("#controller_select").val( {{ controller_id|int  }});
+
+$("#controller_select").bind('change',change_controller)
+ 
+function change_controller(event,ui)
+{
+  
+  current_page = window.location.href
+  
+ 
+  current_page = current_page.slice(0,-2)
+  
+  current_page = current_page+"/"+$("#controller_select")[0].selectedIndex
+  window.location.href = current_page
+}
+ 
+</script>
+
+
+{% endblock %}
+{% block application_header %}
+
+<div style="margin-top:20px"></div>
+
+
+{% endblock %}
+{% block application %}
+
+<div style="margin-top:20px"></div>
+<div id="controller_tag">
+<center>
+<h4>Select Linux Controller</h4>
+</center>
+</div>
+<div id="select_tag">
+<center>
+<select id="controller_select">
+  {% for item in controllers %}
+  <option value="{{loop.index0}}">{{item}}</option>
+  {% endfor %}
+  
+</select>
+</center>
+</div>
+{% for i in stream_range %}
+
+<div style="margin-top:50px"></div>
+<div class="container">
+
+
+
+<div id="{{title[i].replace(".","_").replace("-","_")}}" style="width:100%;height:600pts;"></div>
+
+ <script>
+
+ data = stream_data[stream_keys[{{i}}]]
+ trace= data["data"]
+ layout = data["layout"]
+
+ 
+ for( i = 0;i< trace.x.length; i++)
+ { 
+    trace.x[i] = new Date(trace.x[i]*1000)
+ } 
+
+ Plotly.newPlot("{{title[i].replace(".","_").replace("-","_")}}", [trace],layout);
+    
+</script>
+
+</div>
+
+
+{% endfor %}
+{% block application_footer %}{% endblock %}
+{% endblock %}    
