@@ -8,6 +8,7 @@ class PLC_IO_Control(object):
                 qs,
                 generate_irrigation_control ):
        self.filter_queue = [0,0,0,0,0]
+       self.current_filter = {}   # A4: per-channel median-of-3 rings, keyed by status_key
        self.generate_irrigation_control = generate_irrigation_control
        self.redis_site = redis_site
        self.qs         = qs
@@ -55,13 +56,17 @@ class PLC_IO_Control(object):
 
    def measure_irrigation_current(self,return_value):
        for i in self.plc_irrigation_current_meas:
-          print("irrigation",self.make_current_measurement(i,"PLC_IRRIGATION_CURRENT"))
-          return_value[i["name"]] = self.make_current_measurement(i,"PLC_IRRIGATION_CURRENT")
+          # single read per channel (was two reads: one for the print, one for the value)
+          value = self.make_current_measurement(i,"PLC_IRRIGATION_CURRENT")
+          print("irrigation",value)
+          return_value[i["name"]] = value
 
    def measure_slave_current(self,return_value):
        for i in self.plc_slave_current_meas:
-           print("equipment",self.make_current_measurement(i,"PLC_EQUIPMENT_CURRENT"))
-           return_value[i["name"]] = self.make_current_measurement(i,"PLC_EQUIPMENT_CURRENT")
+           # single read per channel (was two reads: one for the print, one for the value)
+           value = self.make_current_measurement(i,"PLC_EQUIPMENT_CURRENT")
+           print("equipment",value)
+           return_value[i["name"]] = value
 
            
    def make_current_measurement(self,i,status_key): 
@@ -80,6 +85,12 @@ class PLC_IO_Control(object):
        current_value = current_value-2.52
        current_value = current_value/.185
           #print("corrected current",current_value)
+       # A4: median-of-3 per channel rejects a single garbage frame (Modbus desync)
+       # while still passing a sustained (>=2 consecutive) real overcurrent through to KB1.
+       ring = self.current_filter.setdefault(status_key, [current_value]*3)
+       ring.append(current_value)
+       ring.pop(0)
+       current_value = sorted(ring)[1]
        if i["main"] == True:
            
            print("update irrigation table current",status_key,current_value)

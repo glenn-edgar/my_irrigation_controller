@@ -49,7 +49,7 @@ class Modbus_Server( object ):
        failure, retries, output_message = self.msg_handler.process_msg( input_msg )
        
        if failure != 0:
-           output_msg = "@"
+           output_message = "@"   # A2: was 'output_msg' (typo) — failed reads now return a short sentinel the client rejects (len<4), never the garbage frame
            self.statistic_handler.log_bad_message( address, retries )
        else:
             self.statistic_handler.log_good_message( address, retries )

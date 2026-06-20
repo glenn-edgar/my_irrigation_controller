@@ -72,7 +72,7 @@ class RS485_Mgr():
               response = ""
  
        total_failures =1 
-       return total_failures , retries , response
+       return total_failures , retries , b""      # A2: all 5 retries failed CRC -> hand back EMPTY, never the bad frame
      
 
 

@@ -1030,7 +1030,7 @@ class Instrument():
         #if self.close_port_after_each_call:
         self.serial.open()
 
-        #self.serial.flushInput() TODO
+        self.serial.reset_input_buffer()   # A1: pySerial 3.x — clear leftover bytes so a transient glitch re-syncs next transaction instead of needing a reboot
 
         #if sys.version_info[0] > 2:
         #    message = bytes(message, encoding='latin1')  # Convert types to make it Python3 compatible
